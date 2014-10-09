@@ -3,6 +3,7 @@ using System.Linq;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceEventLogging;
 using ServiceEventLogging.Events;
+using ServiceEventLoggerTests.Loggers;
 using ServiceEventLoggerTests.ServiceEventExtensions;
 
 namespace ServiceEventLoggerTests
@@ -13,9 +14,11 @@ namespace ServiceEventLoggerTests
         readonly TestEventLogger logger = new TestEventLogger();
 
         [TestMethod]
-        public void TestAddLogLines()
+        public void TestAddLogLinesToFile()
         {
-            logger.LogServiceSuccessEvent(new ServiceEvent
+            var fileLogger = new TestEventFileLogger();
+
+            fileLogger.LogServiceSuccessEvent(new ServiceEvent
             {
                 DateTime = DateTime.Now,
                 DebugInfo = "DebugLine",
@@ -24,7 +27,7 @@ namespace ServiceEventLoggerTests
                 ServerName = "SERVER_INFO"
             });
 
-            logger.LogServiceFailureEvent(new ServiceEvent
+            fileLogger.LogServiceFailureEvent(new ServiceEvent
             {
                 DateTime = DateTime.Now,
                 DebugInfo = "DebugLine",
@@ -32,9 +35,6 @@ namespace ServiceEventLoggerTests
                 Message = "Standard Server Failure Event",
                 ServerName = "SERVER_INFO"
             });
-
-            // Assert that the two above items are in the log
-            var c = logger.LogLines.Count;
         }
 
         [TestMethod]

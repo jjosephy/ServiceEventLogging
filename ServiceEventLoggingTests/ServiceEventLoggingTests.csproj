@@ -50,11 +50,12 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="Loggers\TestEventFileLogger.cs" />
     <Compile Include="ServiceEventExtensions\MyCustomServiceEvent.cs" />
     <Compile Include="ServiceEventLoggingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TestEventListener.cs" />
-    <Compile Include="TestEventLogger.cs" />
+    <Compile Include="Listeneners\TestEventListener.cs" />
+    <Compile Include="Loggers\TestEventLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ServiceEventLogging\ServiceEventLogging.csproj">

@@ -75,8 +75,7 @@ namespace ServiceEventLogging.Events
                 this.DebugInfo,
                 this.IpAddress,
                 this.Message,
-                this.ServerName,
-                Environment.NewLine);
+                string.Format("{0}{1}", this.ServerName,Environment.NewLine));
         }
     }
 }

@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using ServiceEventLogging;
+using ServiceEventLoggerTests.Listeners;
 using ServiceEventLoggerTests.ServiceEventExtensions;
-using System.Diagnostics.Tracing;
 
-namespace ServiceEventLoggerTests
+namespace ServiceEventLoggerTests.Loggers
 {
     class TestEventLogger : ServiceEventLogger
     {
