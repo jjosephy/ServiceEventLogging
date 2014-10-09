@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Diagnostics.Tracing;
 using System.IO;
 using System.Linq;
@@ -20,10 +21,12 @@ namespace ServiceEventLogging.Listener
         public ServiceEventListener()
         {
             semaphore = new SemaphoreSlim(1);
+            // Test for null
+            var fileName = ConfigurationManager.AppSettings["LogFilePath"];
 
             try
             {
-                file = new FileStream(FileName, FileMode.Append, FileAccess.Write);
+                file = new FileStream(fileName, FileMode.Append, FileAccess.Write);
             }
             catch(ArgumentException argEx)
             {
@@ -68,7 +71,8 @@ namespace ServiceEventLogging.Listener
             }
             catch
             {
-                //what to do here? Event log i guess.
+                //what to do here? Event log i guess. this really shouldnt happen as exception should
+                //be caught when we initialize. File IO is so unfun.
             }
             finally
             {

@@ -26,7 +26,7 @@ namespace ServiceEventLoggerTests
             }
             catch
             {
-                // i dont know if this will ever actually throw but we have to makes sure to release the lock
+                // i dont know if this will ever actually throw but we have to make sure to release the lock
             }
             finally
             {

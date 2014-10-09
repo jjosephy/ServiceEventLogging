@@ -7,8 +7,22 @@ using System.Threading.Tasks;
 
 namespace ServiceEventLogging.Events
 {
-    public class ServerEvent
+    /// <summary>
+    /// Events can allow us to build a "schema" around logs
+    /// </summary>
+    public class ServiceEvent
     {
+        public ServiceEvent()
+        {
+            this.CorrelationId = Guid.NewGuid();
+        }
+
+        public Guid CorrelationId
+        {
+            get;
+            set;
+        }
+
         public DateTime DateTime
         {
             get;
@@ -54,6 +68,7 @@ namespace ServiceEventLogging.Events
         public virtual string ToLogLine()
         {
             return string.Join("|",
+                this.CorrelationId.ToString(),
                 this.EventLevel.ToString(),
                 this.EventId,
                 this.DateTime.ToString(),

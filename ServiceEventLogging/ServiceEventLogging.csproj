@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -40,7 +41,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Events\EventId.cs" />
-    <Compile Include="Events\ServerEvent.cs" />
+    <Compile Include="Events\ServiceEvent.cs" />
     <Compile Include="Events\ServiceEventSource.cs" />
     <Compile Include="Listener\ServiceEventListener.cs" />
     <Compile Include="ServiceEventLogger.cs" />

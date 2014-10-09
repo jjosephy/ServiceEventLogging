@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ServiceEventLogging.Events
 {
-    internal class ServiceEventSource : EventSource
+    public sealed class ServiceEventSource : EventSource
     {
         private static ServiceEventSource source = new ServiceEventSource();
 

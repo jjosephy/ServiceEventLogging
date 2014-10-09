@@ -26,18 +26,26 @@ namespace ServiceEventLogging
             Initialize();
         }
 
-        public void LogServerSuccessEvent(ServerEvent serverEvent)
+        public void LogServiceSuccessEvent(ServiceEvent serverEvent)
         {
             serverEvent.EventId = EventId.ServiceSuccessEvent;
             serverEvent.EventLevel = EventLevel.Informational;
             ServiceEventSource.EventSource.LogServiceSuccessEvent(serverEvent.ToLogLine());
         }
 
-        public void LogServerFailureEvent(ServerEvent serverEvent)
+        public void LogServiceFailureEvent(ServiceEvent serverEvent)
         {
             serverEvent.EventId = EventId.ServiceFailureEvent;
             serverEvent.EventLevel = EventLevel.Warning;
             ServiceEventSource.EventSource.LogServiceFailureEvent(serverEvent.ToLogLine());
+        }
+
+        protected ServiceEventSource EventSource
+        {
+            get
+            {
+                return ServiceEventSource.EventSource;
+            }
         }
 
         private void Initialize()
