@@ -7,7 +7,10 @@ using System.Threading.Tasks;
 
 namespace ServiceEventLoggerTests.Loggers
 {
-    class TestEventFileLogger : ServiceEventLogger
+    class TestEventFileLogger : TestEventLoggerBase
     {
+        public TestEventFileLogger() 
+        {
+        }
     }
 }

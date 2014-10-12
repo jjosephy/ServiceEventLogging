@@ -51,6 +51,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="Loggers\TestEventFileLogger.cs" />
+    <Compile Include="Loggers\TestEventLoggerBase.cs" />
+    <Compile Include="ServiceEventExtensions\CustomTestEventId.cs" />
     <Compile Include="ServiceEventExtensions\MyCustomServiceEvent.cs" />
     <Compile Include="ServiceEventLoggingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

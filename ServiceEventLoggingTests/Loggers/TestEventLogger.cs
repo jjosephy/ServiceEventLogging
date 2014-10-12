@@ -10,20 +10,13 @@ using ServiceEventLoggerTests.ServiceEventExtensions;
 
 namespace ServiceEventLoggerTests.Loggers
 {
-    class TestEventLogger : ServiceEventLogger
+    class TestEventLogger : TestEventLoggerBase
     {
         static readonly TestEventListener listener = new TestEventListener();
 
         public TestEventLogger() :
             base(listener)
         {
-        }
-
-        public void LogMyServiceDidSomethingCoolEvent(MyCustomServiceEvent serverEvent)
-        {
-            serverEvent.EventId = 5000; //customize my eventId
-            serverEvent.EventLevel = EventLevel.Informational;
-            this.EventSource.LogServiceSuccessEvent(serverEvent.ToLogLine());
         }
 
         public IList<string> LogLines

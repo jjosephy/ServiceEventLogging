@@ -15,16 +15,10 @@ namespace ServiceEventLogging.Events
         {
         }
 
-        [Event(1000, Level = EventLevel.Informational)]
-        public void LogServiceSuccessEvent(string logLine)
+        [Event(1, Level = EventLevel.LogAlways)]
+        public void LogServiceEvent(string logLine)
         {
-            this.WriteEvent(EventId.ServiceSuccessEvent, logLine);
-        }
-
-        [Event(1001, Level = EventLevel.Informational)]
-        public void LogServiceFailureEvent(string logLine)
-        {
-            this.WriteEvent(EventId.ServiceFailureEvent, logLine);
+            this.WriteEvent(1, logLine);
         }
 
         public static ServiceEventSource EventSource

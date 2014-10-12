@@ -12,7 +12,6 @@ namespace ServiceEventLogging
 {
     public abstract class ServiceEventLogger
     {
-        // this could be an event listener defined in the tracing library
         readonly EventListener listener;
 
         protected ServiceEventLogger() :
@@ -26,18 +25,16 @@ namespace ServiceEventLogging
             Initialize();
         }
 
-        public void LogServiceSuccessEvent(ServiceEvent serverEvent)
+        public void LogServiceSuccessEvent(ServiceEvent serviceEvent)
         {
-            serverEvent.EventId = EventId.ServiceSuccessEvent;
-            serverEvent.EventLevel = EventLevel.Informational;
-            ServiceEventSource.EventSource.LogServiceSuccessEvent(serverEvent.ToLogLine());
+            serviceEvent.EventId = serviceEvent.EventId == -1 ? EventId.ServiceSuccessEvent : serviceEvent.EventId;
+            ServiceEventSource.EventSource.LogServiceEvent(serviceEvent.ToLogLine());
         }
 
-        public void LogServiceFailureEvent(ServiceEvent serverEvent)
+        public void LogServiceFailureEvent(ServiceEvent serviceEvent)
         {
-            serverEvent.EventId = EventId.ServiceFailureEvent;
-            serverEvent.EventLevel = EventLevel.Warning;
-            ServiceEventSource.EventSource.LogServiceFailureEvent(serverEvent.ToLogLine());
+            serviceEvent.EventId = serviceEvent.EventId == -1 ? EventId.ServiceFailureEvent : serviceEvent.EventId;
+            ServiceEventSource.EventSource.LogServiceEvent(serviceEvent.ToLogLine());
         }
 
         protected ServiceEventSource EventSource

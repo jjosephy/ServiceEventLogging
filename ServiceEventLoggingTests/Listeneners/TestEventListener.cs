@@ -17,22 +17,19 @@ namespace ServiceEventLoggerTests.Listeners
         {
         }
 
-        protected async override void OnEventWritten(EventWrittenEventArgs eventData)
+        protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            await lockContext.WaitAsync();
+            lockContext.Wait();
             try
             {
                 logLines.Add(eventData.Payload.First().ToString());
             }
             catch
-            {
-                // i dont know if this will ever actually throw but we have to make sure to release the lock
-            }
+            {}
             finally
             {
                 lockContext.Release();
             }
-
         }
 
         public IList<string> LogLines
