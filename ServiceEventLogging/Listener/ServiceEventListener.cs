@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Diagnostics;
@@ -16,10 +17,13 @@ namespace ServiceEventLogging.Listener
     internal class ServiceEventListener : EventListener
     {
         const string ApplicationEventSource = "ServiceEventLogging";
-        const string LogFileName = "servicelog_{0}.log";
+        const string LogFileName = "_ServiceLog_{0}.log";
+        const string UnknownServiceName = "UnknownService";
         const string UnexpectedCloseException = "Unexpected Exception trying to close and re-initialize file";
         const string ThreadAbortException = "Thread Abort Exception";
         const string WriteException = "Exception trying to write to file";
+        const string ServiceLogKey = "_servicelog_";
+
         const uint MaxFileSize = 10485760; // (10 MB) is max // 524288(.5MB); // 1048576(1MB); //5242880 (5MB); 
 
         /// <summary>
@@ -28,10 +32,10 @@ namespace ServiceEventLogging.Listener
         /// </summary>
         static bool listenerIsInitialized = false;
 
-
         readonly ReaderWriterLockSlim lockContext = new ReaderWriterLockSlim();
         readonly uint allowedFileSize;
         readonly string filePath;
+        readonly string serviceLogFileName;
         volatile FileStream file;
         int currentFileId = 0;
         string currentFileName = string.Empty;
@@ -44,6 +48,7 @@ namespace ServiceEventLogging.Listener
             if (!listenerIsInitialized)
             {
                 listenerIsInitialized = true;
+
                 filePath = ConfigurationManager.AppSettings["LogFilePath"];
                 if (uint.TryParse(ConfigurationManager.AppSettings["MaxFileSize"], out allowedFileSize))
                 {
@@ -57,14 +62,24 @@ namespace ServiceEventLogging.Listener
                 {
                     allowedFileSize = MaxFileSize;
                 }
+
+                this.serviceLogFileName =
+                    string.IsNullOrWhiteSpace(ConfigurationManager.AppSettings["ServiceLogName"]) ?
+                    string.Concat(UnknownServiceName, LogFileName) :
+                    string.Concat(ConfigurationManager.AppSettings["ServiceLogName"], LogFileName);
+
                 FindLastLogFile();
                 InitializeFile();
             }
         }
 
+        /// <summary>
+        /// This is called anytime an Event is written
+        /// </summary>
+        /// <param name="eventData"></param>
         protected override void OnEventWritten(EventWrittenEventArgs eventData)
         {
-            // File will be null if for some reason initialze fails.
+            // File will be null if for some reason initialize fails.
             if (file != null)
             {
                 Task.Run(() =>
@@ -138,9 +153,9 @@ namespace ServiceEventLogging.Listener
                 {
                     foreach (var file in files)
                     {
-                        if (file.IndexOf("servicelog_") >= 0)
+                        if (file.IndexOf(ServiceLogKey, StringComparison.OrdinalIgnoreCase) >= 0)
                         {
-                            var first = file.IndexOf('_') + 1;
+                            var first = file.LastIndexOf('_') + 1;
                             var parsed = file.Substring(first, file.IndexOf('.') - first);
                             int id = 0;
                             if (int.TryParse(parsed, out id))
@@ -164,7 +179,7 @@ namespace ServiceEventLogging.Listener
             // TODO: try to test all of the conditions below.
             try
             {
-                this.currentFileName = string.Format(LogFileName, currentFileId.ToString());
+                this.currentFileName = string.Format(this.serviceLogFileName, currentFileId.ToString());
                 var filePath = Path.Combine(this.filePath, this.currentFileName);
                 this.file = new FileStream(filePath, FileMode.Append, FileAccess.Write);
             }

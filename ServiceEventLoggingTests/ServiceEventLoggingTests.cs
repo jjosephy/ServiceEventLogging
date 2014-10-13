@@ -1,14 +1,14 @@
 ﻿using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Diagnostics.Tracing;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using ServiceEventLogging;
 using ServiceEventLogging.Events;
 using ServiceEventLoggerTests.Loggers;
 using ServiceEventLoggerTests.ServiceEventExtensions;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-using System.IO;
 
 namespace ServiceEventLoggerTests
 {
@@ -85,6 +85,15 @@ namespace ServiceEventLoggerTests
                 EventId = CustomTestEventId.CustomTestEventFinalizer,
                 EventLevel =  EventLevel.Critical
             });
+        }
+
+        [TestMethod]
+        public void TestEventListener_FindLastLogFile()
+        {
+            //PrivateType type = new PrivateType(typeof(ServiceEventListener))
+            PrivateObject o = new PrivateObject(
+                "ServiceEventLogging.Listener",
+                "ServiceEventListener");
         }
 
         private string FindLogLine(Guid correlationId, string customDataPoint)

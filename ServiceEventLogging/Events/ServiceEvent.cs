@@ -8,6 +8,11 @@ using System.Threading.Tasks;
 
 namespace ServiceEventLogging.Events
 {
+    //TODO: add 
+    // HttpStatusCode
+    // MethodName
+    // EllapsedMilliseconds (?)
+
     /// <summary>
     /// Events can allow us to build a "schema" around logs
     /// </summary>
